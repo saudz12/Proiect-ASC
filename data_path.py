@@ -1,68 +1,81 @@
 import numpy as np
 
+x = 4
+
 BYTESCOUNT = 1
 REGISCOUNT = 15
+MUXSIZE = 3
+OPRSIZE = 5
 
-cuvantControl = []
+regInstruc = []
+curInstruc = []
 
-sela = []
-selb = []
-seld = []
+selA = []
+selB = []
+selD = []
+
 opr = []
 
-arr = []
+registers = []
+busA = []
+busB = []
 
 output = []
 #print(registers)
 
-  
-
 def initializeRegisters():
-    global arr
+    global registers
     for i in range(0, REGISCOUNT+1): #number of registers - depends on number of bits in SELD
-        arr += [[]]
+        registers += [[]]
         for j in range(0, BYTESCOUNT*8): #number of bits per word
-            arr[i] += [0]
+            registers[i] += [0]
+
+def interpret(commands):
+    global regInstruc
+    
+    regInstruc = [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0]
+ 
+ #1 XOR 2 > 1, 1 ADD 2 > 0
+ #1011000101000100100000010001      
 
 def fetch(nr):
-    global cuvantControl 
-    cuvantControl = 
+    global regInstruc
+    global curInstruc
+    curInstruc = regInstruc[nr:(nr+3*MUXSIZE+OPRSIZE)]
     
 def decode():
-
+    #primii OPRSIZE biti: operation code 
+    #urm MUXSIZE biti: SELA
+    #urm MUXSIZE biti: SELB
+    #urm MUXSIZE biti: SELD
+    
+    global curInstruc
+    global opr
+    global selA
+    global selB
+    global selD
+    opr = curInstruc[0:OPRSIZE]
+    selA = curInstruc[OPRSIZE:(OPRSIZE+MUXSIZE)]
+    selB = curInstruc[(OPRSIZE+MUXSIZE):(OPRSIZE+2*MUXSIZE)]
+    selD = curInstruc[(OPRSIZE+2*MUXSIZE):(OPRSIZE+3*MUXSIZE)]
+    return
     
 def execute():
-
+    # output = UAL(busA, busB, opr)
+    return 
 
 def load(output):
-    global seld
-    global arr
-    match seld:
-        case [0, 0, 0]:
-            arr[0] = output
-        case [0, 0, 1]:
-            arr[1] = output
-        case [0, 1, 0]:
-            arr[2] = output
-        case [0, 1, 1]:
-            arr[3] = output
-        case [1, 0, 0]:
-            arr[4] = output
-        case [1, 0, 1]:
-            arr[5] = output
-        case [1, 1, 0]:
-            arr[6] = output
-        case [1, 1, 1]:
-            arr[7] = output
+    global selD
+    global registers
+    poz = int(''.join(str(i) for i in selD), 2)
+    if poz == 0:
+        info = int(''.join(str(i) for i in output), 2)
+        print(info)
+    else:
+        registers[poz] = output
+    return
     
-    
-
-def DATA_PATH():
-    print(arr)
-
-    # output = UAL(busA, busB, opr)
-    load(output)
-    
-
+'''
 initializeRegisters()
 print(arr)
+'''
