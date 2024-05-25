@@ -1,38 +1,19 @@
 import numpy as np
-
-x = 4
-
-BYTESCOUNT = 1
-REGISCOUNT = 15
-MUXSIZE = 3
-OPRSIZE = 5
-
-regInstruc = []
-curInstruc = []
-
-selA = []
-selB = []
-selD = []
-
-opr = []
-
-registers = []
-busA = []
-busB = []
-
-output = []
+from variables import *
 #print(registers)
 
-def initializeRegisters():
-    global registers
-    for i in range(0, REGISCOUNT+1): #number of registers - depends on number of bits in SELD
-        registers += [[]]
-        for j in range(0, BYTESCOUNT*8): #number of bits per word
-            registers[i] += [0]
-
-def interpret(commands):
+def interpret(command):
     global regInstruc
-    
+    '''arr = []
+    arr = command.split()
+    match len(arr):
+        case 1:
+            exit(0)
+        case 3:
+            match arr[0]:
+                case "ADD":
+                    opr = codes["ADD"]
+            '''
     regInstruc = [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0]
  
  #1 XOR 2 > 1, 1 ADD 2 > 0
@@ -61,6 +42,8 @@ def decode():
     return
     
 def execute():
+    busA = registers[int(''.join(str(i) for i in selA), 2)]
+    busB = registers[int(''.join(str(i) for i in selB), 2)]
     # output = UAL(busA, busB, opr)
     return 
 
