@@ -1,19 +1,10 @@
 import numpy as np
 
-def complement(a):
-    i=len(a)-1
-    while i>=0:
-        if(a[i]==1):
-            i-=1
-            break
-        i-=1
-    while(i>=0):
-        if(a[i]==1):
-            a[i]=0
-        else:
-            a[i]=1
-        i-=1
-    return a
+def complement(bin_list):
+    """Complement in baza 2"""
+    inverted = [1 - bit for bit in bin_list]
+    one = [0] * (len(bin_list) - 1) + [1]
+    return ADD(inverted, one)
         
 
 def negat(a):
@@ -26,24 +17,25 @@ def negat(a):
         i-=1
     return a
 
-def ADD(a,b):
-    t=0
-    r=[]
-    for i in range(0,len(a)):
-        r+=[0]
+def ADD(bin1,bin2):
+    """Adunare"""
+    max_len = max(len(bin1), len(bin2))
     
-    i,j= len(a)-1,len(b)-1
-    while i>=0 or j>=0 or t:
-        total=t
-        if i>=0:
-            total+=a[i]
-            i-=1
-        if j>=0:
-            total+=b[i]
-            j-=1   
-        r[i]+=total%2
-        t=total//2
-    return r    
+    # asiguram ca ambele numere sunt reprezentate pe acelasi nr de biti
+    while len(bin1) < max_len:
+        bin1.insert(0, 0)
+    while len(bin2) < max_len:
+        bin2.insert(0, 0)
+    
+    result = []
+    carry = 0
+    
+    for i in range(max_len - 1, -1, -1):
+        total_sum = carry + bin1[i] + bin2[i]
+        carry = total_sum // 2
+        result.insert(0, total_sum % 2)
+    
+    return result[-max_len:]  # Taiem la lungimea initiala
 
 def AND(a,b):
     for i in range(0,len(a)):
@@ -61,63 +53,119 @@ def XOR(a,b):
     return a
 
 def SUBTR(a,b):
-    t=0
-    r=[]
-    for i in range(0,len(a)):
-        r+=[0]
-    for i in range(0,len(a)):
-        if t:
-            a[i]-=1
-        suma=a[i]-b[i]
-        if suma<0:
-            t=1
-            suma+=2
-        else: 
-            t=0
-        r[i]+=suma%2
-    return r
+    max_len = max(len(a), len(b))
+    while len(a) < max_len:
+        a.insert(0, 0)
+    while len(b) < max_len:
+        b.insert(0, 0)
+    result = [0] * max_len
+    borrow = 0
+    for i in range(max_len - 1, -1, -1):
+        diff = a[i] - b[i] - borrow
+        if diff < 0:
+            diff += 2
+            borrow = 1
+        else:
+            borrow = 0
+        result[i] = diff
+    #Scoatem 0-urile in plus din fata
+    while len(result) > 1 and result[0] == 0:
+        result.pop(0)
+    return result
 
 def INCR(a):
     return ADD(a,1)
 def DECR(a):
     return SUBTR(a,1)
 
-def MULTIPLY(m,r):
-    a=[]
-    s=[]
-    p=[]
-    for i in range(0, 10):
-        a+=[0]
-        s+=[0]
-        p+=[0]
+def MULTIPLY(multiplicand, multiplier):
+    """Alg. lui Booth"""
+    n = len(multiplicand)
+
+    A = multiplicand + [0] * (n + 1)
+    S = complement(multiplicand) + [0] * (n + 1)
+    P = [0] * n + multiplier + [0]
+    print(A)
+    print(S)
+    print(P)
+    for i in range(n):
+        if P[-2:] == [0, 1]:
+            P = ADD(P, A)
+            
+        elif P[-2:] == [1, 0]:
+            P = ADD(P, S)
+        P =SHIFT_R(P)
+
+    return P[:-1]
+def GREATER_EQ(a,b):
+    max_len = max(len(a), len(b))
+    while len(a) < max_len:
+        a.insert(0, 0)
+    while len(b) < max_len:
+        b.insert(0, 0)
+    for x,y in zip(a,b):
+        if x>y:
+            return True
+        elif x<y:
+            return False
+    return True
+def DIVIDE(N,D):
+    if all(d==0 for d in D):
+        return [1]*len(N)
         
-    for i in range(0,len(m)-1):
-        if i==0:
-            a[i]=1
-        else:
-            a[i]=m[i]
-            
-    for i in range(0,len(m)-1):
-        if i==0:
-            s[i]=0
-        else:
-            s[i]=m[i]
-            
-    for i in range(0,10):
-            p[i]=0
+    R=[0]*(len(N)+1)
+    Q=[0]*len(N)
+    for i in range (len(N)):
+        R=SHIFT_L(R)
+        R[-1]=N[i]
+        if(GREATER_EQ(R,D)):
+            R=SUBTR(R,D)
+            Q[i]=1
+    return Q
+
+def SHIFT_R(x):
+    y=[0]*len(x)
+    y[0]=x[0] 
+    for i in range(1,len(x)):
+          y[i]=x[i-1]
+    return y
+
+def SHIFT_L(x):
+    y=[0]*len(x)
+    y[len(x)-1]=x[len(x)-1] 
+    for i in range(len(x)-2,0,-1) :
+          y[i]=x[i+1]
+    return y
+
+def SHIFT_RC(x):
+    y=x[len(x)-1]
+    x=SHIFT_R(x)
+    x[0]=y
+    return x
     
+def SHIFT_LC(x):
+    y=x[0]
+    x=SHIFT_L(x)
+    x[len(x)-1]=y
+    return x
+def NAND(a,b):
+    r = []
+    for b1, b2 in zip(a, b):
+        r.append(1 - (b1 & b2))
 
-    
-    return p
+    return r
+def NOR(a,b):
+    r = []
+    for b1, b2 in zip(a, b):
+        r.append(1 - (b1 | b2))
 
+    return r
 
-def DIVIDE(a,b):
-    return
-
-def SHIFT_R():
-    return
-def SHIFT_L():
-    return
+def XNOR(a,b):
+    r =[]
+    for b1,b2 in zip(a,b):
+        r.append(1 if b1==b2 else 0)
+    return r
 def ALU(a,b,opr):
     match opr: 
         case [0,0,0,0,0]: 
@@ -159,12 +207,20 @@ def ALU(a,b,opr):
         case [1,0,0,1,0]:
                 return SHIFT_L(a)
         case [1,0,0,1,1]:
-                return
+                return SHIFT_RC(a)
         case [1,0,1,0,0]:
-                return
+                return SHIFT_LC(a)
         case [1,0,1,0,1]:
-                return
+                return NAND(a,b)
+        case [1,0,1,1,0]:
+                return NOR(a,b)
         case [1,0,1,1,1]:
-                return
+                return XNOR(a,b)
+        case [1,1,1,0,1]:
+                return #RESET_REG
+        case [1,1,1,1,0]:
+                return #IN- gen incarca de la util - nu avem altcv
+        case [1,1,1,1,1]: 
+                return #OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen
         
-print(ALU([1,0,0,0],[1,0],[0,1,1,1,1]))
+#print(ALU([1,0,1,1],[1,1,0,1],[1,0,1,1,1]))

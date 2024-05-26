@@ -21,12 +21,12 @@
 10100	-->A < B
 10101	-->A > B
 10110	-->A <= B
-10111	-->A >= B
+10111	-->A >= B | reultatul la toate operatiile se va pune in A - 
 11000	-->switch contents 2 registers
 11001	
 11010
 11011
 11100   
-11101   -->RESET TARGET REG
+11101   -->RESET TARGET REG - sets content to 0
 11110	-->IN - incarca de la util - nu avem altcv
-11111	-->OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen
+11111	-->OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen | smilar cu 00000 cu selD 000

@@ -16,6 +16,7 @@ print(dp.selD)'''
 commands = "ADD 5 6"
 
 dp.interpret(commands)
+dp.interpret("SUB 1 2")
 print(dp.regInstruc)
 
 '''while(commands.split(" ")[0] != "STOP"):

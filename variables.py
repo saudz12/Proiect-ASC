@@ -1,19 +1,22 @@
 x = 4
 
-BYTESCOUNT = 1
-REGISCOUNT = 15
-MUXSIZE = 3
-OPRSIZE = 5
+BYTESCOUNT = 1 #each register of 1 byte
+MUXSIZE = 3 #2^3-1 reigsters - 1 operand in the MUX will be input - vezi schema
+REGISCOUNT = 2**MUXSIZE - 1
+OPRSIZE = 5#2^5 different opperations performed by ALU (somewhat)
 
 regInstruc = []
 curInstruc = []
 
+#SELA for MUXA SELB for MUXB SELD for DECODER 
 selA = []
 selB = []
 selD = []
 
+#OPERATION CODE
 opr = []
 
+#DICTIONARY OF POSSIBLE OPERATION CODES
 codes = {
 }
 
@@ -35,9 +38,9 @@ def initializeRegisters():
         for j in range(0, BYTESCOUNT*8): #number of bits per word
             registers[i] += [0]
     
-    codes["LOAD"] = []
+    codes["MOVE"] = []
     for i in range(0, OPRSIZE):
-        codes["LOAD"] += [0]
+        codes["MOVE"] += [0]
     
     codes["NOT"] = []
     for i in range(0, OPRSIZE-1):
@@ -149,11 +152,11 @@ def initializeRegisters():
         codes["GEQ"] += [0]
     codes["GEQ"] += [1, 0, 1, 1, 1]
     
-    '''codes["SUB"] = []
+    codes["SUB"] = []
     for i in range(0, OPRSIZE - 5):
         codes["SUB"] += [0]
     codes["SUB"] += [1, 1, 0, 0, 0]
-    
+    '''
     codes["SUB"] = []
     for i in range(0, OPRSIZE - 5):
         codes["SUB"] += [0]
