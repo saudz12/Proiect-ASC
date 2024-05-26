@@ -1,28 +1,62 @@
 import numpy as np
 from variables import *
-#print(registers)
 
-def interpret(command):
+#print(registers) #cehck if variables works right
+
+#dont have UCC and RAM so we made something up
+#for tests the user imputs something like
+#XOR 1 2 ADD 1 2
+#and we get
+#01011001010001
+
+def interpret(command : str):
     global regInstruc
-    '''arr = []
+    global MUXSIZE
+    
+    arr = []
     arr = command.split()
     match len(arr):
         case 1:
             exit(0)
         case 3:
-            match arr[0]:
-                case "ADD":
-                    opr = codes["ADD"]
-            '''
-    regInstruc = [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0]
- 
- #1 XOR 2 > 1, 1 ADD 2 > 0
- #1011000101000100100000010001      
+            regInstruc += codes[arr[0]]
+            
+            source = []
+            destination = []
+            
+            aux = []
+            val = int(arr[1])
+            
+            for bit in bin(val): 
+                aux += [bit]
+            aux = aux[2:]
+            start = len(aux) - MUXSIZE
+            if start < 0:
+                start = 0
+            for i in range(start, len(aux)):
+                destination += [aux[i]]
+                
+            aux = []
+            val = int(arr[2])
+            
+            for bit in bin(val): 
+                aux += [bit]
+            aux = aux[2:]
+            start = len(aux) - MUXSIZE
+            if start < 0:
+                start = 0
+            for i in range(len(aux) - MUXSIZE, len(aux)):
+                source += [aux[i]]
+            
+            regInstruc += destination + source + destination
+            
+    #regInstruc = [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0] #mock    
 
 def fetch(nr):
     global regInstruc
     global curInstruc
     curInstruc = regInstruc[nr:(nr+3*MUXSIZE+OPRSIZE)]
+    return
     
 def decode():
     #primii OPRSIZE biti: operation code 

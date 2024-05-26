@@ -25,10 +25,16 @@ output = []
 
 def initializeRegisters():
     global registers
+    global codes
+    global REGISCOUNT
+    global BYTESCOUNT
+    global OPRSIZE
+    
     for i in range(0, REGISCOUNT+1): #number of registers - depends on number of bits in SELD
         registers += [[]]
         for j in range(0, BYTESCOUNT*8): #number of bits per word
             registers[i] += [0]
+    
     codes["LOAD"] = []
     for i in range(0, OPRSIZE):
         codes["LOAD"] += [0]
@@ -182,3 +188,6 @@ def initializeRegisters():
     for i in range(0, OPRSIZE - 5):
         codes["OUT"] += [0]
     codes["OUT"] += [1, 1, 1, 1, 1]
+    
+'''initializeRegisters()
+print(codes)'''

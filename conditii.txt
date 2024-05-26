@@ -1,9 +1,9 @@
-00000	-->A
-00001	-->!A
-00010	-->-A
-00011	-->A++
-00100	-->A--
-00101	-->A | B
+00000	-->A - MOVE data from 2nd to first
+00001	-->!A - place the complementary of A in A
+00010	-->-A - negative A (as if A was a number)
+00011	-->A++ - increment 
+00100	-->A-- - decrement 
+00101	-->A | B - place A | B in A
 00110	-->A & B
 00111	-->A + B
 01000	-->A - B
@@ -22,11 +22,11 @@
 10101	-->A > B
 10110	-->A <= B
 10111	-->A >= B
-11000	-->
+11000	-->switch contents 2 registers
 11001	
 11010
 11011
-11100
-11101   -->RESET REG
-11110	-->IN - gen incarca de la util - nu avem altcv
+11100   
+11101   -->RESET TARGET REG
+11110	-->IN - incarca de la util - nu avem altcv
 11111	-->OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen
