@@ -11,19 +11,38 @@ print(dp.curInstruc)
 dp.decode()
 print(dp.selA)
 print(dp.selB)
-print(dp.selD)'''
+print(dp.selD)
+'''
 
 commands = "ADD 5 6"
 
-dp.interpret("IN 5 12")
-dp.interpret("IN 6 11")
-dp.interpret(commands)
+dp.interpret("IN 5 11")
 dp.fetch(0)
 dp.decode()
 dp.execute()
 dp.load()
-print(dp.registers[5], dp.registers[6])
-print()
+
+dp.interpret("IN 6 12")
+dp.fetch(1)
+dp.decode()
+dp.execute()
+dp.load()
+
+dp.interpret(commands)
+dp.fetch(2)
+dp.decode()
+dp.execute()
+dp.load()
+
+dp.interpret("OUT 5 0")
+dp.fetch(3)
+dp.decode()
+dp.execute()
+dp.load()
+
+#print(dp.registers[5], dp.registers[6])
+
+print(int(''.join(str(i) for i in [0, 0, 1, 0, 1, 0]), 2))
 
 '''while(commands.split(" ")[0] != "STOP"):
     commands = input()

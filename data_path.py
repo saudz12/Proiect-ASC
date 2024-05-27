@@ -13,11 +13,15 @@ import ALU
 
 #int(''.join(str(i) for i in selD), 2) from bit array to number!!!
 
-usrInput : int
-callInput : bool
+usrInput = []
+callInput = bool(0)
+
+
 
 def interpret(command : str):
     global regInstruc
+    global usrInput
+    global callInput
     global MUXSIZE
     global BYTESCOUNT
     
@@ -52,15 +56,32 @@ def interpret(command : str):
                 start = 0
             for i in range(start, len(aux)):
                 destination += [int(aux[i])]
-                
-            regInstruc += destination    
+
+            
+            regInstruc += destination 
             
             aux = []
             val = int(arr[2])
             
             if arr[0] == "IN":
+                callInput = bool(1)
+                usrInput = []
+                for bit in bin(val): 
+                    aux += [bit]
+                aux = aux[2:]
+                offset = 8*BYTESCOUNT - len(aux)
+                if offset > 0:
+                    gol = []
+                    for i in range(0, offset):
+                        gol += [0]
+                    aux = gol + aux
+                start = len(aux) - 8*BYTESCOUNT
+                if start < 0:
+                    start = 0
+                for i in range(len(aux) - 8*BYTESCOUNT, len(aux)):
+                    usrInput += [int(aux[i])]
                 for i in range(0, MUXSIZE):
-                    source += [0]
+                    source += [1]
             else:
                 for bit in bin(val): 
                     aux += [bit]
@@ -81,10 +102,10 @@ def interpret(command : str):
             
             if arr[0] == "OUT":
                 destination = []
-                for i in range(0, 8*BYTESCOUNT):
-                    destination += [0]
+                for i in range(0, MUXSIZE):
+                    destination += [1]
             
-            regInstruc += destination 
+            regInstruc += destination
             
     #regInstruc = [0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0] #mock    
 
@@ -92,7 +113,7 @@ def interpret(command : str):
 def fetch(nr):
     global regInstruc
     global curInstruc
-    curInstruc = list(regInstruc[nr:(nr+3*MUXSIZE+OPRSIZE)])
+    curInstruc = list(regInstruc[nr*(3*MUXSIZE+OPRSIZE):((nr+1)*(3*MUXSIZE+OPRSIZE))])
     return
     
 #DECODE stage - 
@@ -112,8 +133,13 @@ def decode():
     
     opr = list(curInstruc[0:OPRSIZE])
     selA = list(curInstruc[OPRSIZE:(OPRSIZE+MUXSIZE)])
-    selB = list(curInstruc[(OPRSIZE+MUXSIZE):(OPRSIZE+2*MUXSIZE)])
+    if callInput == bool(0):
+        selB = list(curInstruc[(OPRSIZE+MUXSIZE):(OPRSIZE+2*MUXSIZE)])
+    else:
+        selB = []
     selD = list(curInstruc[(OPRSIZE+2*MUXSIZE):(OPRSIZE+3*MUXSIZE)])
+    
+    
     
     return
 
@@ -126,13 +152,19 @@ def execute():
     global selB
     global selA
     global revCodes
+    global usrInput
+    global callInput
     
-    busA = list(registers[int(''.join(str(i) for i in selA), 2)])
+    poz = int(''.join(str(i) for i in selA), 2)    
     
-    if revCodes[str(output)] == "IN":
-        busB = list(selB)
+    busA = list(registers[poz])
+    
+    if callInput == bool(1) :
+        busB = list(usrInput)
     else:
-        busB = list(registers[int(''.join(str(i) for i in selB), 2)])
+        busB = list(registers[int(''.join(str(i) for i in list(selB)), 2)])
+    
+    callInput = bool(0)
     
     output = ALU.ALU(list(busA), list(busB), list(opr))
     
@@ -144,7 +176,7 @@ def load():
     global registers
     
     poz = int(''.join(str(i) for i in selD), 2)
-    if poz == 0:
+    if poz == REGISCOUNT:
         info = int(''.join(str(i) for i in output), 2)
         print(info)
     else:

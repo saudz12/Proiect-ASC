@@ -29,4 +29,4 @@
 11100   
 11101   -->RESET TARGET REG - sets content to 0
 11110	-->IN - incarca de la util - nu avem altcv
-11111	-->OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen | smilar cu 00000 cu selD 000
+11111	-->OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen 
