@@ -8,6 +8,9 @@ OPRSIZE = 5#2^5 different opperations performed by ALU (somewhat)
 regInstruc = []
 curInstruc = []
 
+emptyReg = []
+emptyMux = []
+
 #SELA for MUXA SELB for MUXB SELD for DECODER 
 selA = []
 selB = []
@@ -19,6 +22,8 @@ opr = []
 #DICTIONARY OF POSSIBLE OPERATION CODES
 codes = {
 }
+revCodes = {
+}
 
 registers = []
 busA = []
@@ -27,16 +32,28 @@ busB = []
 output = []
 
 def initializeRegisters():
-    global registers
-    global codes
     global REGISCOUNT
     global BYTESCOUNT
     global OPRSIZE
+    
+    global emptyReg
+    global emptyMux
+    global registers
+    global codes
+    global revCodes
     
     for i in range(0, REGISCOUNT+1): #number of registers - depends on number of bits in SELD
         registers += [[]]
         for j in range(0, BYTESCOUNT*8): #number of bits per word
             registers[i] += [0]
+    
+    emptyReg = []
+    emptyMux = []
+    
+    for i in range(0, 8*BYTESCOUNT):
+        emptyReg += [0]
+    for i  in range(0, MUXSIZE):
+        emptyMux += [0]
     
     codes["MOVE"] = []
     for i in range(0, OPRSIZE):
@@ -192,5 +209,8 @@ def initializeRegisters():
         codes["OUT"] += [0]
     codes["OUT"] += [1, 1, 1, 1, 1]
     
+    for key, value in codes.items():
+        revCodes[str(value)] = key
+    
 '''initializeRegisters()
-print(codes)'''
+print(codes, "\n\n", revCodes)'''

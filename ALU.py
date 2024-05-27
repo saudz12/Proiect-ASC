@@ -1,4 +1,5 @@
 import numpy as np
+from variables import emptyMux, emptyReg
 
 def complement(bin_list):
     """Complement in baza 2"""
@@ -169,43 +170,43 @@ def XNOR(a,b):
 def ALU(a,b,opr):
     match opr: 
         case [0,0,0,0,0]: 
-                return a
-        case [0,0,0,0,1]:
                 return b
+        case [0,0,0,0,1]:
+                return negat(a)
         case [0,0,0,1,0]:
                 return complement(a) #functie pt a complementar
         case [0,0,0,1,1]:
-                return complement(b) #functie pentru b complementar
+                return INCR(a) #functie pentru b complementar
         case [0,0,1,0,0]:
-                return negat(a) #functie pentru !a
+                return DECR(a) #functie pentru !a
         case [0,0,1,0,1]:
-                return negat(b) #functie pentru !b    
+                return OR(a, b) #functie pentru !b    
         case [0,0,1,1,0]:
-                return OR(a,b)
-        case [0,0,1,1,1]:
                 return AND(a,b)
+        case [0,0,1,1,1]:
+                return ADD(a,b)
         case [0,1,0,0,0]:
-                return ADD(a,b) #functie ADD with carry 
+                return SUBTR(a,b) #functie ADD with carry 
         case [0,1,0,0,1]:
-                return SUBTR(a,b) #scadere cu transport
+                return MULTIPLY(a,b) #scadere cu transport
         case [0,1,0,1,0]: 
-                return XOR(a,b) #functie XOR a,b 
+                return DIVIDE(a,b) #functie XOR a,b 
         case [0,1,0,1,1]:
-                return INCR(a)
+                return XOR(a, b)
         case [0,1,1,0,0]:
-                return INCR(b)
-        case [0,1,1,0,1]:
-                return DECR(a)
-        case [0,1,1,1,0]:
-                return DECR(b)
-        case [0,1,1,1,1]:
-                return MULTIPLY(a,b)
-        case [1,0,0,0,0]:
-                return DIVIDE(a,b)
-        case [1,0,0,0,1]:
                 return SHIFT_R(a)
-        case [1,0,0,1,0]:
+        case [0,1,1,0,1]:
                 return SHIFT_L(a)
+        case [0,1,1,1,0]:
+                return SHIFT_RC(a)
+        case [0,1,1,1,1]:
+                return SHIFT_LC(a)
+        case [1,0,0,0,0]:
+                return NOR(a, b)
+        case [1,0,0,0,1]:
+                return NAND(a, b)
+        case [1,0,0,1,0]:
+                return XNOR(a, b)
         case [1,0,0,1,1]:
                 return SHIFT_RC(a)
         case [1,0,1,0,0]:
@@ -217,10 +218,10 @@ def ALU(a,b,opr):
         case [1,0,1,1,1]:
                 return XNOR(a,b)
         case [1,1,1,0,1]:
-                return #RESET_REG
+                return list(emptyReg)
         case [1,1,1,1,0]:
-                return #IN- gen incarca de la util - nu avem altcv
+                return b #IN- gen incarca de la util - nu avem altcv
         case [1,1,1,1,1]: 
-                return #OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen
+                return a #OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen
         
 #print(ALU([1,0,1,1],[1,1,0,1],[1,0,1,1,1]))

@@ -19,6 +19,7 @@ callInput : bool
 def interpret(command : str):
     global regInstruc
     global MUXSIZE
+    global BYTESCOUNT
     
     arr = []
     arr = command.split()
@@ -40,6 +41,12 @@ def interpret(command : str):
             for bit in bin(val): 
                 aux += [bit]
             aux = aux[2:]
+            offset = MUXSIZE - len(aux)
+            if offset > 0:
+                gol = []
+                for i in range(0, offset):
+                    gol += [0]
+                aux = gol + aux
             start = len(aux) - MUXSIZE
             if start < 0:
                 start = 0
@@ -51,14 +58,24 @@ def interpret(command : str):
             aux = []
             val = int(arr[2])
             
-            for bit in bin(val): 
-                aux += [bit]
-            aux = aux[2:]
-            start = len(aux) - MUXSIZE
-            if start < 0:
-                start = 0
-            for i in range(len(aux) - MUXSIZE, len(aux)):
-                source += [int(aux[i])]
+            if arr[0] == "IN":
+                for i in range(0, MUXSIZE):
+                    source += [0]
+            else:
+                for bit in bin(val): 
+                    aux += [bit]
+                aux = aux[2:]
+                offset = MUXSIZE - len(aux)
+                if offset > 0:
+                    gol = []
+                    for i in range(0, offset):
+                        gol += [0]
+                    aux = gol + aux
+                start = len(aux) - MUXSIZE
+                if start < 0:
+                    start = 0
+                for i in range(len(aux) - MUXSIZE, len(aux)):
+                    source += [int(aux[i])]
                 
             regInstruc += source
             
@@ -85,6 +102,8 @@ def decode():
     #urm MUXSIZE biti: SELB
     #urm MUXSIZE biti: SELD
     
+    global OPRSIZE
+    global MUXSIZE
     global curInstruc
     global opr
     global selA
@@ -97,19 +116,30 @@ def decode():
     selD = list(curInstruc[(OPRSIZE+2*MUXSIZE):(OPRSIZE+3*MUXSIZE)])
     
     return
-    
+
+output
+  
 def execute():
     global opr
+    global output
+    global registers
+    global selB
+    global selA
+    global revCodes
     
     busA = list(registers[int(''.join(str(i) for i in selA), 2)])
     
-    busB = list(registers[int(''.join(str(i) for i in selB), 2)])
+    if revCodes[str(output)] == "IN":
+        busB = list(selB)
+    else:
+        busB = list(registers[int(''.join(str(i) for i in selB), 2)])
     
     output = ALU.ALU(list(busA), list(busB), list(opr))
     
     return 
 
-def load(output):
+def load():
+    global output
     global selD
     global registers
     

@@ -15,9 +15,15 @@ print(dp.selD)'''
 
 commands = "ADD 5 6"
 
+dp.interpret("IN 5 12")
+dp.interpret("IN 6 11")
 dp.interpret(commands)
-dp.interpret("SUB 1 2")
-print(dp.regInstruc)
+dp.fetch(0)
+dp.decode()
+dp.execute()
+dp.load()
+print(dp.registers[5], dp.registers[6])
+print()
 
 '''while(commands.split(" ")[0] != "STOP"):
     commands = input()
