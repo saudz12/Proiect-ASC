@@ -86,9 +86,9 @@ def MULTIPLY(multiplicand, multiplier):
     A = multiplicand + [0] * (n + 1)
     S = complement(multiplicand) + [0] * (n + 1)
     P = [0] * n + multiplier + [0]
-    print(A)
-    print(S)
-    print(P)
+    #print(A)
+    #print(S)
+    #print(P)
     for i in range(n):
         if P[-2:] == [0, 1]:
             P = ADD(P, A)

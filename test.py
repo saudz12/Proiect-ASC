@@ -44,7 +44,7 @@ cnt = 4
 
 while(True):
     commands = input()
-    print(commands)
+    #print(commands)
     if commands.split(' ')[0] == "STOP":
         break
     dp.interpret(str(commands))

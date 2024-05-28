@@ -23,7 +23,7 @@
 10110	-->A <= B
 10111	-->A >= B | reultatul la toate operatiile se va pune in A - 
 11000	-->switch contents 2 registers
-11001	
+11001	-->SQRT 
 11010
 11011
 11100   
