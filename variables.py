@@ -55,9 +55,9 @@ def initializeRegisters():
     for i  in range(0, MUXSIZE):
         emptyMux += [0]
     
-    codes["MOVE"] = []
+    codes["MOV"] = []
     for i in range(0, OPRSIZE):
-        codes["MOVE"] += [0]
+        codes["MOV"] += [0]
     
     codes["NOT"] = []
     for i in range(0, OPRSIZE-1):
@@ -123,6 +123,11 @@ def initializeRegisters():
     for i in range(0, OPRSIZE-4):
         codes["LSH"] += [0]
     codes["LSH"] += [1, 1, 0, 1]
+    
+    codes["RSC"] = []
+    for i in range(0, OPRSIZE-4):
+        codes["RSC"] += [0]
+    codes["RSC"] += [1, 1, 1, 0]
     
     codes["LSC"] = []
     for i in range(0, OPRSIZE-4):

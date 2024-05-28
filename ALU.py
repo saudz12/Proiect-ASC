@@ -174,23 +174,23 @@ def ALU(a,b,opr):
         case [0,0,0,0,1]:
                 return negat(a)
         case [0,0,0,1,0]:
-                return complement(a) #functie pt a complementar
+                return complement(a) 
         case [0,0,0,1,1]:
-                return INCR(a) #functie pentru b complementar
+                return INCR(a) 
         case [0,0,1,0,0]:
-                return DECR(a) #functie pentru !a
+                return DECR(a) 
         case [0,0,1,0,1]:
-                return OR(a, b) #functie pentru !b    
+                return OR(a, b)    
         case [0,0,1,1,0]:
                 return AND(a,b)
         case [0,0,1,1,1]:
                 return ADD(a,b)
         case [0,1,0,0,0]:
-                return SUBTR(a,b) #functie ADD with carry 
+                return SUBTR(a,b) 
         case [0,1,0,0,1]:
-                return MULTIPLY(a,b) #scadere cu transport
+                return MULTIPLY(a,b) 
         case [0,1,0,1,0]: 
-                return DIVIDE(a,b) #functie XOR a,b 
+                return DIVIDE(a,b) 
         case [0,1,0,1,1]:
                 return XOR(a, b)
         case [0,1,1,0,0]:
@@ -220,8 +220,8 @@ def ALU(a,b,opr):
         case [1,1,1,0,1]:
                 return list(emptyReg)
         case [1,1,1,1,0]:
-                return b #IN- gen incarca de la util - nu avem altcv
+                return b 
         case [1,1,1,1,1]: 
-                return a #OUT - afiseaza ecran - outputu nu se duce nicaieri altfel - vezi desen
+                return a 
         
 #print(ALU([1,0,1,1],[1,1,0,1],[1,0,1,1,1]))

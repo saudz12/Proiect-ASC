@@ -28,7 +28,7 @@ dp.decode()
 dp.execute()
 dp.load()
 
-dp.interpret(commands)
+dp.interpret(str(commands))
 dp.fetch(2)
 dp.decode()
 dp.execute()
@@ -39,6 +39,20 @@ dp.fetch(3)
 dp.decode()
 dp.execute()
 dp.load()
+
+cnt = 4
+
+while(True):
+    commands = input()
+    print(commands)
+    if commands.split(' ')[0] == "STOP":
+        break
+    dp.interpret(str(commands))
+    dp.fetch(cnt)
+    dp.decode()
+    dp.execute()
+    dp.load()
+    cnt += 1
 
 #print(dp.registers[5], dp.registers[6])
 
