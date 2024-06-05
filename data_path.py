@@ -22,6 +22,7 @@ def interpret(command : str):
     global regInstruc
     global usrInput
     global callInput
+    global codes
     global MUXSIZE
     global BYTESCOUNT
     
@@ -34,7 +35,7 @@ def interpret(command : str):
             if arr[0] != "OUT":
                 exit(0)
         case 3:
-            regInstruc += codes[arr[0]]
+            regInstruc += list(codes[str(arr[0])])
             
             source = []
             destination = []
